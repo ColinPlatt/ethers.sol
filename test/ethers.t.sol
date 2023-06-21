@@ -2,14 +2,14 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "src/ethers.sol"; 
+import "src/BrowserProvider.sol"; 
 
-contract ethersTest is Test {
+contract BrowserProviderTest is Test {
 
-    ethers_sol public ethers;
+    BrowserProvider public ethers;
 
     function setUp() public {
-        ethers = new ethers_sol();
+        ethers = new BrowserProvider();
     }
 
     function test_eth_accounts() public {
