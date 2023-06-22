@@ -17,49 +17,58 @@ contract BrowserProvider is jsonRPCProvider {
         string value;
     }
 
+    function ethereum_request(string memory _request) public pure returns (string memory) {
+        return string.concat(
+            'ethereum.request({',
+            _request,
+            '})'
+        );
+    }
+
+
     function _nativeCurrency(NativeCurrency memory nativeCurrency) internal pure returns (string memory) {
         return string.concat(
-            '{"name": "',
+            '{"name":"',
             nativeCurrency.name,
-            '","symbol": "',
+            '","symbol":"',
             nativeCurrency.symbol,
-            '","decimals": "',
+            '","decimals":"',
             nativeCurrency.decimals.toString(),
             '"}'
         );
     }
 
     function _newKey(Key memory _Key) internal pure returns (string memory) {
-        return string.concat('"', _Key.key, '": "', _Key.value, '"');
+        return string.concat('"', _Key.key, '":"', _Key.value, '"');
     }
 
-    function wallet_addEthereumChain(bytes memory _chainId, string memory _chainName, NativeCurrency memory nativeCurrency, string memory _rpcUrls, string memory _blockExplorerUrls) public pure returns (string memory) {
+    function wallet_addEthereumChain(string memory _chainId, string memory _chainName, NativeCurrency memory nativeCurrency, string memory _rpcUrls, string memory _blockExplorerUrls) public pure returns (string memory) {
         return _request('wallet_addEthereumChain', string.concat(
-            '{"chainId": "',
-            _chainId.toHexString(),
-            '","chainName": "',
+            '{"chainId":"',
+            _chainId,
+            '","chainName":"',
             _chainName,
-            '","nativeCurrency": ',
+            '","nativeCurrency":',
             _nativeCurrency(nativeCurrency),
-            ',"rpcUrls": ',
+            ',"rpcUrls":',
             _rpcUrls,
-            ',"blockExplorerUrls": ',
+            ',"blockExplorerUrls":',
             _blockExplorerUrls,
             '}'
         ));
     }
 
-    function wallet_switchEthereumChain(bytes memory _chainId) public pure returns (string memory) {
+    function wallet_switchEthereumChain(string memory _chainId) public pure returns (string memory) {
         return _request('wallet_switchEthereumChain', string.concat(
-            '{"chainId": "',
-            _chainId.toHexString(),
+            '{"chainId":"',
+            _chainId,
             '"}'
         ));
     }
 
     function wallet_requestPermissions() public pure returns (string memory) {
         return _request('wallet_requestPermissions', string.concat(
-            '{"eth_accounts": {}}'
+            '{"eth_accounts":{}}'
         ));
     }
 
@@ -74,7 +83,7 @@ contract BrowserProvider is jsonRPCProvider {
             }
         }
         return _request('wallet_requestPermissions', string.concat(
-            '{"eth_accounts": {',
+            '{"eth_accounts":{',
             _KeysString,
             '}}'
         ));
@@ -90,13 +99,13 @@ contract BrowserProvider is jsonRPCProvider {
 
     function wallet_watchAsset(address _address, string memory _symbol, string memory _decimals, string memory _image) public pure returns (string memory) {
         return _request('wallet_watchAsset', string.concat(
-            '{"type": "ERC20","options": {"address": "',
+            '{"type":"ERC20","options":{"address":"',
             _address.toHexString(),
-            '","symbol": "',
+            '","symbol":"',
             _symbol,
-            '","decimals": "',
+            '","decimals":"',
             _decimals,
-            '","image": "',
+            '","image":"',
             _image,
             '"}}'
         ));

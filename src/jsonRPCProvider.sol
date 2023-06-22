@@ -10,27 +10,46 @@ contract jsonRPCProvider {
 
     function _request(string memory method) public pure returns (string memory) {
         return string.concat(
-            'await window.ethereum.request({"method": "',
+            '"method":"',
             method,
-            '","params": []})'
+            '","params":[]'
         );
     }
 
     function _request(string memory method, string memory params) public pure returns (string memory) {
         return string.concat(
-            'await window.ethereum.request({"method": "',
+            '"method":"',
             method,
-            '","params": [',
+            '","params":[',
             params,
-            ']})'
+            ']'
         );
     }
 
+    function jsonRPCRequest(string memory _request) public pure returns (string memory) {
+        return string.concat(
+            '{jsonrpc: "2.0",',
+            _request,
+            ', id: 1}'
+        );
+    }
+
+    function fetch_request(string memory _rpcUrl, string memory _request) public pure returns (string memory) {
+        return string.concat(
+            'fetch("',
+            _rpcUrl,
+            '", {method: "POST", headers: {"Content-Type": "application/json"0}}, body: ',
+            jsonRPCRequest(_request),
+            ')'
+        );
+    }
+
+        /*
     function _request(string memory _method, string memory _params, string memory _promise) internal pure returns (string memory) {
         return string.concat(
-            'await window.ethereum.request({"method": "',
+            'ethereum.request({"method":"',
             _method,
-            '","params": [',
+            '","params":[',
             _params,
             ']}).then(',
             _promise,
@@ -40,9 +59,9 @@ contract jsonRPCProvider {
 
     function _request(string memory _method, string memory _params, string memory _promise, string memory _catch) internal pure returns (string memory) {
         return string.concat(
-            'await window.ethereum.request({"method": "',
+            'ethereum.request({"method":"',
             _method,
-            '","params": [',
+            '","params":[',
             _params,
             ']}).then(',
             _promise,
@@ -51,6 +70,57 @@ contract jsonRPCProvider {
             ');'
         );
     }
+
+    function _requestPromise(string memory _request, string memory _promise) public pure returns (string memory) {
+        return string.concat(
+            _request,
+            '.then(',
+            _promise,
+            ');'
+        );
+    }
+
+    function _requestPromise(string memory _request, string memory _promise, string memory _error) public pure returns (string memory) {
+        return string.concat(
+            _request,
+            '.then(',
+            _promise,
+            ').catch(',
+            _error,
+            ');'
+        );
+    }
+
+    function _asyncRequest(string memory _request) internal pure returns (string memory) {
+        return string.concat(
+            'await ',
+            _request
+        );
+    }
+
+    function _asyncRequest(string memory _request, string memory _promise) internal pure returns (string memory) {
+        return string.concat(
+            'await ',
+            _request,
+            '.then(',
+            _promise,
+            ')'
+        );
+    }
+
+    function _asyncRequest(string memory _request, string memory _promise, string memory _error) internal pure returns (string memory) {
+        return string.concat(
+            'await ',
+            _request,
+            '.then(',
+            _promise,
+            ').catch(',
+            _error,
+            ')'
+        );
+    }
+
+    */
 
     enum subscriptionType { logs, newHeads, newPendingTransactions, syncing }
 
