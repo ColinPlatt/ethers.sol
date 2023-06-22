@@ -3,24 +3,26 @@ pragma solidity 0.8.19;
 
 import { LibString } from "lib/solady/src/Milady.sol";
 
+import { Transaction } from "src/Transaction.sol";
+
 contract jsonRPCProvider {
     using LibString for *;
 
-    function _request(string memory method) internal pure returns (string memory) {
+    function _request(string memory method) public pure returns (string memory) {
         return string.concat(
             'await window.ethereum.request({"method": "',
             method,
-            '","params": []});'
+            '","params": []})'
         );
     }
 
-    function _request(string memory method, string memory params) internal pure returns (string memory) {
+    function _request(string memory method, string memory params) public pure returns (string memory) {
         return string.concat(
             'await window.ethereum.request({"method": "',
             method,
             '","params": [',
             params,
-            ']});'
+            ']})'
         );
     }
 
@@ -82,13 +84,13 @@ contract jsonRPCProvider {
         return _request('personal_sign', string.concat('"', _challenge.toHexString(), '","', _address.toHexString(), '"'));
     }
 
-    function eth_sendTransaction(string memory _transaction) public pure returns (string memory) {
-        return _request('eth_sendTransaction', _transaction);
+    function eth_sendTransaction(Transaction memory _transaction) public pure returns (string memory) {
+        return _request('eth_sendTransaction', _transaction.read());
     }
 
     //eth_getBlockByHash
     function eth_getBlockByHash(bytes32 _blockHash, bool _hydratedTransactions) public pure returns (string memory) {
-        return _request('eth_getBlockByHash', string.concat('"', _blockHash.toHexString(), '",', _hydratedTransactions ? 'true' : 'false'));
+        return _request('eth_getBlockByHash', string.concat('"', uint256(_blockHash).toHexString(), '",', _hydratedTransactions ? 'true' : 'false'));
     }
 
     //eth_getBlockByNumber
@@ -99,7 +101,7 @@ contract jsonRPCProvider {
 
     //eth_getBlockTransactionCountByHash
     function eth_getBlockTransactionCountByHash(bytes32 _blockHash) public pure returns (string memory) {
-        return _request('eth_getBlockTransactionCountByHash', string.concat('"', _blockHash.toHexString(), '"'));
+        return _request('eth_getBlockTransactionCountByHash', string.concat('"', uint256(_blockHash).toHexString(), '"'));
     }
 
     //eth_getBlockTransactionCountByNumber
@@ -110,7 +112,7 @@ contract jsonRPCProvider {
 
     //eth_getUncleByBlockHash
     function eth_getUncleByBlockHash(bytes32 _blockHash, uint256 _uncleIndex) public pure returns (string memory) {
-        return _request('eth_getUncleByBlockHash', string.concat('"', _blockHash.toHexString(), '","', _uncleIndex.toHexString(), '"'));
+        return _request('eth_getUncleByBlockHash', string.concat('"', uint256(_blockHash).toHexString(), '","', _uncleIndex.toHexString(), '"'));
     }
 
     //eth_getUncleByBlockNumber
@@ -140,14 +142,14 @@ contract jsonRPCProvider {
     }
 
     //eth_call
-    function eth_call(string memory _transaction, uint256 _blockNumber) public pure returns (string memory) {
-        return _request('eth_call', string.concat(_transaction, ',"', _blockNumber.toHexString(), '"'));
+    function eth_call(Transaction memory _transaction, uint256 _blockNumber) public pure returns (string memory) {
+        return _request('eth_call', string.concat(_transaction.read(), ',"', _blockNumber.toHexString(), '"'));
     }
     //@todo by block tag
 
     //eth_estimateGas
-    function eth_estimateGas(string memory _transaction, uint256 _blockNumber) public pure returns (string memory) {
-        return _request('eth_estimateGas', string.concat(_transaction, ',"', _blockNumber.toHexString(), '"'));
+    function eth_estimateGas(Transaction memory _transaction, uint256 _blockNumber) public pure returns (string memory) {
+        return _request('eth_estimateGas', string.concat(_transaction.read(), ',"', _blockNumber.toHexString(), '"'));
     }
     //@todo by block tag
 
@@ -180,7 +182,7 @@ contract jsonRPCProvider {
 
     //eth_newFilter
     function eth_newFilter(bytes32 _fromBlock, bytes32 _toBlock, address _address) public pure returns (string memory) {
-        return _request('eth_newFilter', string.concat('{"fromBlock":"', _fromBlock.toHexString(), '","toBlock":"', _toBlock.toHexString(), '","address":"', _address.toHexString(), '"}'));
+        return _request('eth_newFilter', string.concat('{"fromBlock":"', uint256(_fromBlock).toHexString(), '","toBlock":"', uint256(_toBlock).toHexString(), '","address":"', _address.toHexString(), '"}'));
     }
     //@todo array of addresses
 
@@ -211,7 +213,7 @@ contract jsonRPCProvider {
 
     //eth_getLogs
     function eth_getLogs(bytes32 _fromBlock, bytes32 _toBlock, address _address) public pure returns (string memory) {
-        return _request('eth_getLogs', string.concat('{"fromBlock":"', _fromBlock.toHexString(), '","toBlock":"', _toBlock.toHexString(), '","address":"', _address.toHexString(), '"}'));
+        return _request('eth_getLogs', string.concat('{"fromBlock":"', uint256(_fromBlock).toHexString(), '","toBlock":"', uint256(_toBlock).toHexString(), '","address":"', _address.toHexString(), '"}'));
     }
 
     //eth_mining
@@ -231,12 +233,12 @@ contract jsonRPCProvider {
 
     //eth_submitWork
     function eth_submitWork(bytes8 _nonce, bytes32 _powHash, bytes32 _mixDigest) public pure returns (string memory) {
-        return _request('eth_submitWork', string.concat('"', abi.encodePacked(_nonce.toHexString()), '","', _powHash.toHexString(), '","', _mixDigest.toHexString(), '"'));
+        return _request('eth_submitWork', string.concat('"', abi.encodePacked(_nonce).toHexString(), '","', uint256(_powHash).toHexString(), '","', uint256(_mixDigest).toHexString(), '"'));
     }
 
     //eth_submitHashrate
     function eth_submitHashrate(bytes32 _hashrate, bytes32 _id) public pure returns (string memory) {
-        return _request('eth_submitHashrate', string.concat('"', _hashrate.toHexString(), '","', _id.toHexString(), '"'));
+        return _request('eth_submitHashrate', string.concat('"', uint256(_hashrate).toHexString(), '","', uint256(_id).toHexString(), '"'));
     }
 
     //eth_getBalance
@@ -288,12 +290,12 @@ contract jsonRPCProvider {
 
     //eth_getTransactionByHash
     function eth_getTransactionByHash(bytes32 _hash) public pure returns (string memory) {
-        return _request('eth_getTransactionByHash', string.concat('"', _hash.toHexString(), '"'));
+        return _request('eth_getTransactionByHash', string.concat('"', uint256(_hash).toHexString(), '"'));
     }
 
     //eth_getTransactionByBlockHashAndIndex
     function eth_getTransactionByBlockHashAndIndex(bytes32 _blockHash, uint256 _index) public pure returns (string memory) {
-        return _request('eth_getTransactionByBlockHashAndIndex', string.concat('"', _blockHash.toHexString(), '","', _index.toHexString(), '"'));
+        return _request('eth_getTransactionByBlockHashAndIndex', string.concat('"', uint256(_blockHash).toHexString(), '","', _index.toHexString(), '"'));
     }
 
     //eth_getTransactionByBlockNumberAndIndex
@@ -304,7 +306,7 @@ contract jsonRPCProvider {
 
     //eth_getTransactionReceipt
     function eth_getTransactionReceipt(bytes32 _hash) public pure returns (string memory) {
-        return _request('eth_getTransactionReceipt', string.concat('"', _hash.toHexString(), '"'));
+        return _request('eth_getTransactionReceipt', string.concat('"', uint256(_hash).toHexString(), '"'));
     }
 
 
