@@ -17,6 +17,11 @@ contract BrowserProvider is jsonRPCProvider {
         string value;
     }
 
+    // simple function that checks if the window.ethereum object is available, and if there are multiple providers, it will return the MetaMask provider
+    function connectWallet() public pure returns (string memory) {
+        return 'const connectWallet=async()=>{if(void 0!==window.ethereum){let e=window.ethereum;if(window.ethereum.providers&&window.ethereum.providers.length){let t=window.ethereum.providers.map(async t=>{t.isMetaMask&&(e=t)});await Promise.all(t)}return e}};';
+    }
+    
     function ethereum_request(string memory _request) public pure returns (string memory) {
         return string.concat(
             'ethereum.request({',

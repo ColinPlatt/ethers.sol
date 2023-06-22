@@ -26,20 +26,20 @@ contract jsonRPCProvider {
         );
     }
 
-    function jsonRPCRequest(string memory _request) public pure returns (string memory) {
+    function jsonRPCRequest(string memory _formedRequest) public pure returns (string memory) {
         return string.concat(
             '{jsonrpc: "2.0",',
-            _request,
+            _formedRequest,
             ', id: 1}'
         );
     }
 
-    function fetch_request(string memory _rpcUrl, string memory _request) public pure returns (string memory) {
+    function fetch_request(string memory _rpcUrl, string memory _formedRequest) public pure returns (string memory) {
         return string.concat(
             'fetch("',
             _rpcUrl,
             '", {method: "POST", headers: {"Content-Type": "application/json"0}}, body: ',
-            jsonRPCRequest(_request),
+            jsonRPCRequest(_formedRequest),
             ')'
         );
     }
