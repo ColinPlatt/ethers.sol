@@ -64,4 +64,11 @@ contract TestWebsite {
             _getBody()
         ));
     }
+
+    function testHTML() public {
+
+        string memory result = returnSite();
+
+        vm.writeFile("test/output/renderedSite.html", result);
+    }
 }
