@@ -22,7 +22,7 @@ utils
 To install with [**Foundry**](https://github.com/gakonst/foundry):
 
 ```sh
-forge install ColinPlatt/ethers.sol
+forge install
 ```
 
 This template repo is shipped with a Python Flask server which allows developers to monitor and serve files via `localhost`, instructions on running this are provided in a separate README in the python folder. 
