@@ -55,7 +55,7 @@ library libBrowserProvider {
     }
 
     function wallet_addEthereumChain(string memory _chainId, string memory _chainName, NativeCurrency memory nativeCurrency, string memory _rpcUrls, string memory _blockExplorerUrls) internal pure returns (string memory) {
-        return jsonRPCProvider._request('wallet_addEthereumChain', string.concat(
+        return libJsonRPCProvider._request('wallet_addEthereumChain', string.concat(
             '{"chainId":"',
             _chainId,
             '","chainName":"',
@@ -71,7 +71,7 @@ library libBrowserProvider {
     }
 
     function wallet_switchEthereumChain(string memory _chainId) internal pure returns (string memory) {
-        return jsonRPCProvider._request('wallet_switchEthereumChain', string.concat(
+        return libJsonRPCProvider._request('wallet_switchEthereumChain', string.concat(
             '{"chainId":"',
             _chainId,
             '"}'
@@ -79,7 +79,7 @@ library libBrowserProvider {
     }
 
     function wallet_requestPermissions() internal pure returns (string memory) {
-        return jsonRPCProvider._request('wallet_requestPermissions', string.concat(
+        return libJsonRPCProvider._request('wallet_requestPermissions', string.concat(
             '{"eth_accounts":{}}'
         ));
     }
@@ -94,7 +94,7 @@ library libBrowserProvider {
                 }
             }
         }
-        return jsonRPCProvider._request('wallet_requestPermissions', string.concat(
+        return libJsonRPCProvider._request('wallet_requestPermissions', string.concat(
             '{"eth_accounts":{',
             _KeysString,
             '}}'
@@ -102,15 +102,15 @@ library libBrowserProvider {
     }
 
     function wallet_getPermissions() internal pure returns (string memory) {
-        return jsonRPCProvider._request('wallet_getPermissions');
+        return libJsonRPCProvider._request('wallet_getPermissions');
     }
 
     function wallet_registerOnboarding() internal pure returns (string memory) {
-        return jsonRPCProvider._request('wallet_registerOnboarding');
+        return libJsonRPCProvider._request('wallet_registerOnboarding');
     }
 
     function wallet_watchAsset(address _address, string memory _symbol, string memory _decimals, string memory _image) internal pure returns (string memory) {
-        return jsonRPCProvider._request('wallet_watchAsset', string.concat(
+        return libJsonRPCProvider._request('wallet_watchAsset', string.concat(
             '{"type":"ERC20","options":{"address":"',
             _address.toHexString(),
             '","symbol":"',
@@ -124,7 +124,7 @@ library libBrowserProvider {
     }
 
     function eth_decrypt(string memory _encryptedMessage, address _address) internal pure returns (string memory) {
-        return jsonRPCProvider._request('eth_decrypt', string.concat(
+        return libJsonRPCProvider._request('eth_decrypt', string.concat(
             '"',
             _encryptedMessage,
             '","',
@@ -134,15 +134,15 @@ library libBrowserProvider {
     }
 
     function eth_getEncryptioninternalKey(address _address) internal pure returns (string memory) {
-        return jsonRPCProvider._request('eth_getEncryptioninternalKey', string.concat('"', _address.toHexString(),'"'));
+        return libJsonRPCProvider._request('eth_getEncryptioninternalKey', string.concat('"', _address.toHexString(),'"'));
     }
 
     function eth_accounts() internal pure returns (string memory) {
-        return jsonRPCProvider._request('eth_accounts');
+        return libJsonRPCProvider._request('eth_accounts');
     }
 
     function eth_signTypedData_v4(address _address, string memory _typedData) internal pure returns (string memory) {
-        return jsonRPCProvider._request('eth_signTypedData_v4', string.concat(
+        return libJsonRPCProvider._request('eth_signTypedData_v4', string.concat(
             '"',
             _address.toHexString(),
             '",',
