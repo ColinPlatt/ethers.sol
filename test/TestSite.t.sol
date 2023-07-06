@@ -22,9 +22,6 @@ contract SiteTest is Test {
         vm.writeFile("test/output/renderedSite.html", result);
     }
 
-
-
-
 }
 
 contract TestWebsite {
@@ -65,10 +62,5 @@ contract TestWebsite {
         ));
     }
 
-    function testHTML() public {
-
-        string memory result = returnSite();
-
-        vm.writeFile("test/output/renderedSite.html", result);
-    }
+    
 }
