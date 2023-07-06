@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import { LibString } from "lib/solady/src/Milady.sol";
+import { LibString, ExtLibString } from "../utils/ExtLibString.sol";
 
 struct html {
     string head;
@@ -12,6 +12,7 @@ struct html {
 function read(
     html memory _html
 ) pure returns (string memory) {
+
     return string.concat(
         "<!DOCTYPE html><html><head>",
         _html.head,
@@ -19,6 +20,7 @@ function read(
         _html.body,
         "</body></html>"
     );
+
 }
 
 function appendHead(
@@ -26,7 +28,7 @@ function appendHead(
     string memory _head
 ) pure returns (html memory) {
     return html(
-        string.concat(_html.head, _head),
+        LibString.concat(_html.head, _head),
         _html.body
     );
 }
@@ -36,7 +38,7 @@ function prependHead(
     string memory _head
 ) pure returns (html memory) {
     return html(
-        string.concat(_head, _html.head),
+        LibString.concat(_head, _html.head),
         _html.body
     );
 }
@@ -47,7 +49,7 @@ function appendBody(
 ) pure returns (html memory) {
     return html(
         _html.head,
-        string.concat(_html.body, _body)
+        LibString.concat(_html.body, _body)
     );
 }
 
@@ -57,7 +59,7 @@ function prependBody(
 ) pure returns (html memory) {
     return html(
         _html.head,
-        string.concat(_body, _html.body)
+        LibString.concat(_body, _html.body)
     );
 }
 
@@ -210,7 +212,7 @@ function hN(
     string memory _props,
     string memory _children
 ) pure returns (html memory) {
-    return _html.appendBody(el(string.concat('h',LibString.toString(_n)), _props, _children));
+    return _html.appendBody(el(LibString.concat('h',LibString.toString(_n)), _props, _children));
 }
 
 function hN_(
@@ -218,7 +220,7 @@ function hN_(
     uint _n,
     string memory _children
 ) pure returns (html memory) {
-    return _html.appendBody(el(string.concat('h',LibString.toString(_n)), _children));
+    return _html.appendBody(el(LibString.concat('h',LibString.toString(_n)), _children));
 }
 
 function script(

@@ -3,7 +3,6 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 import "src/types/html.sol"; 
-
 import "src/utils/HTML.sol";
 
 contract TypeTest is Test {
@@ -65,6 +64,19 @@ contract TypeTest is Test {
         );
         emit log_named_string("website", result);
         vm.writeFile("test/output/stringsSite.html", result);
+    }
+
+    function testScratch() public {
+        bytes memory first = bytes("<!DOCTYPE html><html><head>");
+        bytes memory second = bytes("</head><body>");
+        bytes memory third = bytes("</body></html>");
+
+        emit log_bytes(first);
+        emit log_bytes(second);
+        emit log_bytes(third);
+
+
+
     }
 
     
