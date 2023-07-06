@@ -58,6 +58,14 @@ library HTML {
         return el('div', _props, _children);
     }
 
+    function div(string memory _children)
+        internal
+        pure
+        returns (string memory)
+    {
+        return el('div', _children);
+    }
+
     function textarea(string memory _props, string memory _children)
         internal
         pure
