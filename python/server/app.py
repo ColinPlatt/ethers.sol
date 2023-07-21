@@ -17,9 +17,11 @@ watchdog_process = subprocess.Popen(['python', watchdog_script_path])
 #use absolute path to avoid issues with running from different directories
 app = Flask(__name__, static_folder=ABSOLUTE_OUTPUT_DIR_PATH)
 
+print(f'Opening HTML at: {app.static_folder}  file : {HTML_OUTPUT_FILE}')
+
 @app.route('/')
 def home():
-    return send_from_directory(app.static_folder, 'renderedSite.html')
+    return send_from_directory(app.static_folder, HTML_OUTPUT_FILE)
 
 if __name__ == "__main__":
-    app.run(port=8000, debug=True)
+    app.run(port=8001, debug=True)
