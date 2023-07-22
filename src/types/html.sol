@@ -277,7 +277,7 @@ function title(html memory _html, string memory _title) pure {
 }
 
 function meta(html memory _html, string memory _meta) pure {
-    _html.appendHead(el("title", _meta));
+    _html.appendHead(el("meta", _meta));
 }
 
 function style(html memory _html, string memory _style) pure {
