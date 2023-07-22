@@ -1,38 +1,24 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.12;
 
-import "lib/solady/src/utils/LibString.sol";
-
 // Core utils used extensively to format CSS and numbers.
 library utils {
     // used to simulate empty strings
-    string internal constant NULL = '';
+    string internal constant NULL = "";
 
     // formats a CSS variable line. includes a semicolon for formatting.
-    function setCssVar(string memory _key, string memory _val)
-        internal
-        pure
-        returns (string memory)
-    {
-        return string.concat('--', _key, ':', _val, ';');
+    function setCssVar(string memory _key, string memory _val) internal pure returns (string memory) {
+        return string.concat("--", _key, ":", _val, ";");
     }
 
     // formats getting a css variable
-    function getCssVar(string memory _key)
-        internal
-        pure
-        returns (string memory)
-    {
-        return string.concat('var(--', _key, ')');
+    function getCssVar(string memory _key) internal pure returns (string memory) {
+        return string.concat("var(--", _key, ")");
     }
 
     // formats getting a def URL
-    function getDefURL(string memory _id)
-        internal
-        pure
-        returns (string memory)
-    {
-        return string.concat('url(#', _id, ')');
+    function getDefURL(string memory _id) internal pure returns (string memory) {
+        return string.concat("url(#", _id, ")");
     }
 
     // formats rgba white with a specified opacity / alpha
@@ -46,69 +32,46 @@ library utils {
     }
 
     // formats generic rgba color in css
-    function rgba(
-        uint256 _r,
-        uint256 _g,
-        uint256 _b,
-        uint256 _a
-    ) internal pure returns (string memory) {
-        string memory formattedA = _a < 100
-            ? string.concat('0.', utils.uint2str(_a))
-            : '1';
-        return
-            string.concat(
-                'rgba(',
-                utils.uint2str(_r),
-                ',',
-                utils.uint2str(_g),
-                ',',
-                utils.uint2str(_b),
-                ',',
-                formattedA,
-                ')'
-            );
+    function rgba(uint256 _r, uint256 _g, uint256 _b, uint256 _a) internal pure returns (string memory) {
+        string memory formattedA = _a < 100 ? string.concat("0.", utils.uint2str(_a)) : "1";
+        return string.concat(
+            "rgba(", utils.uint2str(_r), ",", utils.uint2str(_g), ",", utils.uint2str(_b), ",", formattedA, ")"
+        );
     }
 
     // checks if two strings are equal
-    function stringsEqual(string memory _a, string memory _b)
-        internal
-        pure
-        returns (bool)
-    {
-        return
-            keccak256(abi.encodePacked(_a)) == keccak256(abi.encodePacked(_b));
+    function stringsEqual(string memory _a, string memory _b) internal pure returns (bool) {
+        return keccak256(abi.encodePacked(_a)) == keccak256(abi.encodePacked(_b));
     }
 
     // returns the length of a string in characters
-    function utfStringLength(string memory _str)
-        internal
-        pure
-        returns (uint256 length)
-    {
+    function utfStringLength(string memory _str) internal pure returns (uint256 length) {
         uint256 i = 0;
         bytes memory string_rep = bytes(_str);
 
         while (i < string_rep.length) {
-            if (string_rep[i] >> 7 == 0) i += 1;
-            else if (string_rep[i] >> 5 == bytes1(uint8(0x6))) i += 2;
-            else if (string_rep[i] >> 4 == bytes1(uint8(0xE))) i += 3;
-            else if (string_rep[i] >> 3 == bytes1(uint8(0x1E)))
+            if (string_rep[i] >> 7 == 0) {
+                i += 1;
+            } else if (string_rep[i] >> 5 == bytes1(uint8(0x6))) {
+                i += 2;
+            } else if (string_rep[i] >> 4 == bytes1(uint8(0xE))) {
+                i += 3;
+            } else if (string_rep[i] >> 3 == bytes1(uint8(0x1E))) {
                 i += 4;
-                //For safety
-            else i += 1;
+            }
+            //For safety
+            else {
+                i += 1;
+            }
 
             length++;
         }
     }
 
     // converts an unsigned integer to a string
-    function uint2str(uint256 _i)
-        internal
-        pure
-        returns (string memory _uintAsString)
-    {
+    function uint2str(uint256 _i) internal pure returns (string memory _uintAsString) {
         if (_i == 0) {
-            return '0';
+            return "0";
         }
         uint256 j = _i;
         uint256 len;
@@ -127,23 +90,4 @@ library utils {
         }
         return string(bstr);
     }
-}
-
-library ExtLibString {
-
-    function toMinimalHexString(uint256 value) internal pure returns (string memory str) {
-        str = LibString.toHexStringNoPrefix(value);
-
-        /// @solidity memory-safe-assembly
-        assembly {
-            // forgefmt: disable-next-item
-            let offset := eq(byte(0, mload(add(str, 0x20))), 0x30) // Check if leading zero is present.
-
-            let strLength := add(mload(str), 2) // Compute the length.
-            mstore(add(str, offset), 0x3078) // Write the "0x" prefix. Adjusting for leading zero.
-            str := sub(str, sub(2, offset)) // Move the pointer.
-            mstore(str, sub(strLength, offset)) // Write the length.
-        }
-    }
-
 }

@@ -3,7 +3,7 @@ pragma solidity 0.8.19;
 
 import { LibString } from "lib/solady/src/Milady.sol";
 
-import { Transaction } from "src/Transaction.sol";
+import { Transaction } from "./Transaction.sol";
 
 contract jsonRPCProvider {
     using LibString for *;

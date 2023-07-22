@@ -9,9 +9,9 @@ import {
     nestDispatcher} from "./types/html.sol";
 import {fn, arrowFn, ArrowFn} from "./types/js.sol";
 import {css} from "./types/css.sol";
-import {html} from "./utils/HTML.sol";
+import {HTML} from "./utils/HTML.sol";
 import {json} from "./utils/JSON.sol";
 import {utils} from "./utils/Utils.sol";
 
 import {libJsonRPCProvider, libBrowserProvider, LibString} from "./libBrowserProvider.sol";
-import {jsonRPCProvider, browserProvider} from "./jsonRPCProvider.sol";
+import {jsonRPCProvider, BrowserProvider} from "./BrowserProvider.sol";
